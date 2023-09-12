@@ -5,8 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        ResizeMode="CanResize"
+        Title="Distribution series and calculation methods"
+        Height="450"
+        Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+
+            <SolidColorBrush x:Key="dark"
+                             Color="#333338" />
+            <Style x:Key="mainOut"
+                   TargetType="TextBlock">
+
+                <Setter Property="Foreground"
+                        Value="WhiteSmoke" />
+                <Setter Property="Background"
+                        Value="DimGray" />
+                <Setter Property="FontSize"
+                        Value="13" />
+                <Setter Property="Padding"
+                        Value="5" />
+                <Setter Property="TextWrapping"
+                        Value="Wrap" />
+
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource dark}">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="outInitialData"
+                   Style="{StaticResource mainOut}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Visible">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+
+                <StackPanel>
+
+                    <TextBlock Text="Variants:"
+                               Style="{StaticResource mainOut}"
+                               FontWeight="Bold" />
+                    <TextBlock Text="Frequency:"
+                               Style="{StaticResource mainOut}"
+                               FontWeight="Bold" />
+
+                </StackPanel>
+
+                <StackPanel>
+
+                    <TextBlock x:Name="outVariants"
+                               Style="{StaticResource mainOut}" />
+                    <TextBlock x:Name="outVariantsFrequency"
+                               Style="{StaticResource mainOut}" />
+
+                </StackPanel>
+
+            </StackPanel>
+
+        </ScrollViewer>
 
     </Grid>
+
 </Window>
