@@ -38,19 +38,42 @@
 
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition />
+            <RowDefinition />
 
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="outInitialData"
-                   Style="{StaticResource mainOut}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition />
+            <ColumnDefinition />
+
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+
+                <UniformGrid x:Name="outInitialData" 
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center" />
+
+                <Button Content="Calculate" Click="On_Calculate_Click" 
+                        />
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+
 
         <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Disabled"
-                      HorizontalScrollBarVisibility="Visible">
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto" >
 
             <StackPanel VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -67,14 +90,7 @@
 
                 </StackPanel>
 
-                <StackPanel>
-
-                    <TextBlock x:Name="outVariants"
-                               Style="{StaticResource mainOut}" />
-                    <TextBlock x:Name="outVariantsFrequency"
-                               Style="{StaticResource mainOut}" />
-
-                </StackPanel>
+                <UniformGrid Name="outVariants"/>
 
             </StackPanel>
 
