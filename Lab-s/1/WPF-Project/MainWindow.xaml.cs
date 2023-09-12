@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace WPF_Project
 {
@@ -14,13 +16,11 @@ namespace WPF_Project
         {
             InitializeComponent();
 
-            Insert2DArrayInTextBlock(outInitialData, Data, "", 7);
-            CalculateVariantsFrequency();
-
             // TODO: ScottPlot.WPF
+            InsertArray2DInUniformedGrid(outInitialData, Data);
         }
 
-        public static double[,] Data { get; } =
+        public static double[,] Data =
         {
             { 61.2, 61.4, 60.2, 61.2, 61.3, 60.4, 61.4, 60.8, 61.2, 60.6 },
             { 61.6, 60.2, 61.3, 60.3, 60.7, 60.9, 61.2, 60.5, 61.0, 61.4 },
@@ -34,24 +34,6 @@ namespace WPF_Project
             { 62.1, 62.6, 61.6, 62.5, 62.4, 62.3, 62.1, 62.3, 62.2, 62.1 }
         };
 
-        void Insert2DArrayInTextBlock<T>(TextBlock view, T[,] rows, string separator = "", int padRight = 0)
-        {
-            for (int i = 0; i < rows.GetLength(0); i++)
-            {
-                var len = rows.GetLength(1);
-
-                for (int j = 0; j < len; j++)
-                {
-                    if (j + 1 != len)
-                    {
-                        view.Text += (rows[i, j]!.ToString()! + separator).PadRight(padRight);
-                    }
-                }
-
-                view.Text += "\n";
-            }
-        }
-
         void InsertArrayInTextBlock<T>(TextBlock view, T[] arr, string separator = "", int padRight = 0)
         {
             foreach (var t in arr)
@@ -62,17 +44,13 @@ namespace WPF_Project
 
         T[] Array2DToArray1D<T>(T[,] arr)
         {
-            var len1 = arr.GetLength(0);
-            var len2 = arr.GetLength(1);
+            var res = new T[arr.Length];
+            var counter = 0;
 
-            var res = new T[len1 * len2];
-
-            for (int i = 0; i < len1; i++)
+            foreach (var item in arr)
             {
-                for (int j = 0; j < len2; j++)
-                {
-                    res[i * len1 + j] = arr[i, j];
-                }
+                res[counter] = item;
+                counter++;
             }
 
             return res;
@@ -84,13 +62,34 @@ namespace WPF_Project
 
             Array.Sort(temp);
 
-            var res = from num in temp
-                      group num by num into nums
-                      let frequency = nums.Count()
-                      select new { Value = nums.Key, Frequency = frequency };
+            // TODO: calculating variants and their frequency
+            //var newLen = temp.Count();
+            
+            //double[,] res = ;
 
-            InsertArrayInTextBlock(outVariants, res.Select(x => x.Value).ToArray(), "", 7);
-            InsertArrayInTextBlock(outVariantsFrequency, res.Select(x => x.Frequency).ToArray(), "", 10);
+            //InsertArray2DInUniformedGrid(outVariants, res);
+        }
+
+        void InsertArray2DInUniformedGrid<T>(UniformGrid grid, T[,] arr)
+        {
+            grid.Rows = arr.GetLength(0);
+            grid.Columns = arr.GetLength(1);
+
+            foreach (var ar in arr)
+            {
+                var cell = new TextBlock();
+                cell.Foreground = Brushes.White;
+                cell.Padding = new Thickness(5);
+                cell.Background = Brushes.DimGray;
+                cell.Text = ar!.ToString();
+
+                grid.Children.Add(cell);
+            }
+        }
+
+        private void On_Calculate_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateVariantsFrequency();
         }
     }
 }
