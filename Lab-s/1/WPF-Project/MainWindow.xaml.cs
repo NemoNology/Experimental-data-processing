@@ -55,6 +55,7 @@ namespace WPF_Project
             InsertDataInUniformedGrid(outDiscreteSeries, res);
 
             var plt = outDiscreteSeriesPlot.Plot;
+            plt.Title("Discrete series plot");
             plt.AddLollipop(res[1], res[0], colors.Green)
                 .ShowValuesAboveBars = true;
             plt.YAxis.Label("Frequency");
@@ -96,6 +97,7 @@ namespace WPF_Project
             InsertDataInUniformedGrid(outIntervalSeries, res, (2, len));
 
             var plt = outIntervalSeriesPlot.Plot;
+            plt.Title("Interval series plot");
             var bar = plt.AddBar(resCount.Select(x => (double)x).ToArray(),
                 positions, colors.Purple);
             bar.BarWidth = h;
@@ -103,7 +105,7 @@ namespace WPF_Project
             outIntervalSeriesPlot.Refresh();
         }
 
-        void InsertDataInUniformedGrid<T>(UniformGrid grid, T[] arr, (int rowsAmount, int columnAmount) size)
+        static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[] arr, (int rowsAmount, int columnAmount) size)
         {
             grid.Children.Clear();
 
@@ -112,17 +114,11 @@ namespace WPF_Project
 
             foreach (var ar in arr)
             {
-                grid.Children.Add(new TextBlock
-                {
-                    Foreground = Brushes.White,
-                    Padding = new Thickness(5),
-                    Background = Brushes.DimGray,
-                    Text = ar!.ToString()
-                });
+                grid.Children.Add(GetTextBlock(ar!));
             }
         }
 
-        void InsertDataInUniformedGrid<T>(UniformGrid grid, T[][] arr)
+        static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[][] arr)
         {
             grid.Children.Clear();
 
@@ -133,23 +129,30 @@ namespace WPF_Project
             {
                 foreach (var item in ar)
                 {
-                    grid.Children.Add(new TextBlock
-                    {
-                        Foreground = Brushes.White,
-                        Padding = new Thickness(5),
-                        Background = Brushes.DimGray,
-                        Text = item!.ToString()
-                    });
+                    grid.Children.Add(GetTextBlock(item!));
                 }
             }
         }
 
-        private void Init()
+        void Init()
         {
             InsertDataInUniformedGrid(outInitialData, Data, (10, 10));
 
             BuildDiscreteSeries();
             BuildIntervalSeries();
+        }
+
+        static TextBlock GetTextBlock(object content)
+        {
+            return new TextBlock
+            {
+                Foreground = Brushes.White,
+                Padding = new Thickness(5),
+                Background = Brushes.DimGray,
+                FontSize = 14,
+                TextAlignment = System.Windows.TextAlignment.Center,
+                Text = content.ToString()
+            };
         }
     }
 }

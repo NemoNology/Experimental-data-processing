@@ -111,62 +111,66 @@
                 </Grid.RowDefinitions>
                 <!--#endregion-->
 
-                <!--#region: Discrete series-->
-                <ScrollViewer Style="{StaticResource mainScroll}">
+                <!--#region: Tables-->
+                <ScrollViewer Style="{StaticResource mainScroll}"
+                              Grid.ColumnSpan="2">
 
-                    <StackPanel Orientation="Horizontal"
-                                Style="{StaticResource centerPanel}"
-                                Margin="0, 10">
+                    <StackPanel Style="{StaticResource centerPanel}">
 
-                        <StackPanel>
+                        <!--Discrete-->
+                        <StackPanel Orientation="Horizontal"
+                                    Style="{StaticResource centerPanel}"
+                                    Margin="0, 10">
 
-                            <TextBlock Text="Variants:"
-                                       Style="{StaticResource subOut}"
-                                       FontWeight="Bold" />
-                            <TextBlock Text="Frequency:"
-                                       Style="{StaticResource subOut}"
-                                       FontWeight="Bold" />
+                            <StackPanel>
+
+                                <TextBlock Text="Variants:"
+                                           Style="{StaticResource subOut}"
+                                           FontWeight="Bold" />
+                                <TextBlock Text="Frequency:"
+                                           Style="{StaticResource subOut}"
+                                           FontWeight="Bold" />
+
+                            </StackPanel>
+
+                            <UniformGrid Name="outDiscreteSeries" />
 
                         </StackPanel>
 
-                        <UniformGrid Name="outDiscreteSeries" />
+                        <!--Intervals-->
+                        <StackPanel Orientation="Horizontal"
+                                    Style="{StaticResource centerPanel}"
+                                    Margin="0, 10">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Interval variants:"
+                                           Style="{StaticResource subOut}"
+                                           FontWeight="Bold" />
+                                <TextBlock Text="Frequency:"
+                                           Style="{StaticResource subOut}"
+                                           FontWeight="Bold" />
+
+                            </StackPanel>
+
+                            <UniformGrid Name="outIntervalSeries" />
+
+                        </StackPanel>
 
                     </StackPanel>
 
                 </ScrollViewer>
 
-                <WpfPlot Name="outDiscreteSeriesPlot"
-                         Grid.Column="1" />
+                
                 <!--#endregion-->
 
-                <!--#region: Interval series-->
-                <ScrollViewer Style="{StaticResource mainScroll}"
-                              Grid.Row="1">
-
-                    <StackPanel Orientation="Horizontal"
-                                Style="{StaticResource centerPanel}"
-                                Margin="0, 10">
-
-                        <StackPanel>
-
-                            <TextBlock Text="Interval variants:"
-                                       Style="{StaticResource subOut}"
-                                       FontWeight="Bold" />
-                            <TextBlock Text="Frequency:"
-                                       Style="{StaticResource subOut}"
-                                       FontWeight="Bold" />
-
-                        </StackPanel>
-
-                        <UniformGrid Name="outIntervalSeries" />
-
-                    </StackPanel>
-
-                </ScrollViewer>
+                <!--#region: Plots-->
+                <WpfPlot Name="outDiscreteSeriesPlot"
+                         Grid.Row="1" />
 
                 <WpfPlot Name="outIntervalSeriesPlot"
-                         Grid.Column="1"
-                         Grid.Row="1" />
+                         Grid.Row="1"
+                         Grid.Column="1" />
                 <!--#endregion-->
 
             </Grid>
