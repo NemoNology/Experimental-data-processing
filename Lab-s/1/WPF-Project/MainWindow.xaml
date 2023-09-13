@@ -45,6 +45,10 @@
                         Value="5" />
                 <Setter Property="TextWrapping"
                         Value="Wrap" />
+                <Setter Property="TextAlignment"
+                        Value="Right" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
 
             </Style>
 
@@ -76,7 +80,7 @@
     </Window.Resources>
 
     <TabControl Background="{StaticResource dark}"
-                SelectedIndex="1">
+                SelectedIndex="2">
 
         <!--#region: Initial data-->
         <TabItem Header="Initial data">
@@ -178,8 +182,47 @@
         </TabItem>
         <!--#endregion-->
 
-        <!--#region: Task-->
+        <!--#region: Accumulated frequencies-->
+        <TabItem Header="Accumulated frequencies">
 
+            <Grid>
+
+                <!--#region: Col & row definicions-->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--#endregion-->
+
+                <!--#region: Frequencies-->
+                <ScrollViewer Style="{StaticResource mainScroll}">
+
+                    <StackPanel Style="{StaticResource centerPanel}"
+                                Orientation="Horizontal">
+
+                        <StackPanel Style="{StaticResource centerPanel}">
+
+                            <TextBlock Text="Relative frequencies:"
+                                       Style="{StaticResource subOut}"/>
+
+                            <TextBlock Text="Relative accumulated frequencies:"
+                                       Style="{StaticResource subOut}" />
+
+                        </StackPanel>
+
+                        <UniformGrid x:Name="outAccumulatedFrequencies" />
+
+                    </StackPanel>
+
+                </ScrollViewer>
+                
+                <WpfPlot x:Name="outAccumulatedFrequenciesPlot" 
+                         Grid.Row="1" />
+                <!--#endregion-->
+                
+            </Grid>
+            
+        </TabItem>
         <!--#endregion-->
 
         <!--#region: Task-->
