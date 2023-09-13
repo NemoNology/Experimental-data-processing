@@ -19,7 +19,6 @@ namespace WPF_Project
         {
             InitializeComponent();
 
-            // TODO: ScottPlot.WPF
             Init();
         }
 
@@ -75,7 +74,7 @@ namespace WPF_Project
             var len = (int)Math.Round(k, MidpointRounding.AwayFromZero);
 
             var resSessions = new (double sessionStart, double sessionEnd)[len];
-            var resCount = new int[len];
+            var resCount = new double[len];
             var res = new string[len * 2];
 
             var positions = new double[len];
@@ -98,11 +97,16 @@ namespace WPF_Project
 
             var plt = outIntervalSeriesPlot.Plot;
             plt.Title("Interval series plot");
-            var bar = plt.AddBar(resCount.Select(x => (double)x).ToArray(),
-                positions, colors.Purple);
+            var bar = plt.AddBar(resCount, positions, colors.Purple);
             bar.BarWidth = h;
             bar.ShowValuesAboveBars = true;
+            plt.AddScatter(positions, resCount, colors.Gray).LineWidth = 2;
             outIntervalSeriesPlot.Refresh();
+        }
+
+        void BuildAccumulatedFrequencies()
+        {
+            
         }
 
         static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[] arr, (int rowsAmount, int columnAmount) size)
@@ -140,6 +144,7 @@ namespace WPF_Project
 
             BuildDiscreteSeries();
             BuildIntervalSeries();
+            BuildAccumulatedFrequencies();
         }
 
         static TextBlock GetTextBlock(object content)
