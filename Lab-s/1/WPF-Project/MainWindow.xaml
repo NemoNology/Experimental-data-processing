@@ -10,15 +10,12 @@
         Title="Distribution series and calculation methods"
         Height="640"
         Width="860">
-
     <Window.Resources>
         <ResourceDictionary>
-
             <SolidColorBrush x:Key="dark"
                              Color="#333338" />
             <Style x:Key="mainOut"
                    TargetType="TextBlock">
-
                 <Setter Property="Foreground"
                         Value="WhiteSmoke" />
                 <Setter Property="Background"
@@ -29,12 +26,9 @@
                         Value="5" />
                 <Setter Property="TextWrapping"
                         Value="Wrap" />
-
             </Style>
-
             <Style x:Key="subOut"
                    TargetType="TextBlock">
-
                 <Setter Property="Foreground"
                         Value="Gainsboro" />
                 <Setter Property="Background"
@@ -49,12 +43,9 @@
                         Value="Right" />
                 <Setter Property="FontWeight"
                         Value="Bold" />
-
             </Style>
-
             <Style x:Key="mainScroll"
                    TargetType="ScrollViewer">
-
                 <Setter Property="HorizontalScrollBarVisibility"
                         Value="Auto" />
                 <Setter Property="VerticalScrollBarVisibility"
@@ -63,181 +54,118 @@
                         Value="5" />
                 <Setter Property="Padding"
                         Value="10" />
-
             </Style>
-
             <Style x:Key="centerPanel"
                    TargetType="StackPanel">
-
                 <Setter Property="HorizontalAlignment"
                         Value="Center" />
                 <Setter Property="VerticalAlignment"
                         Value="Center" />
-
             </Style>
-
         </ResourceDictionary>
     </Window.Resources>
-
     <TabControl Background="{StaticResource dark}"
                 SelectedIndex="2">
-
-        <!--#region: Initial data-->
+        <!-- #region: Initial data -->
         <TabItem Header="Initial data">
-
             <Grid>
-
                 <StackPanel Style="{StaticResource centerPanel}">
-
                     <UniformGrid x:Name="outInitialData" />
-
                 </StackPanel>
-
             </Grid>
-
         </TabItem>
-        <!--#endregion-->
-
-        <!--#region: Distribution series-->
+        <!-- #endregion -->
+        <!-- #region: Distribution series -->
         <TabItem Header="Distribution series">
-
             <Grid>
-
-                <!--#region: Col & row definicions-->
+                <!-- #region: Col & row definicions -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <!--#endregion-->
-
-                <!--#region: Tables-->
+                <!-- #endregion -->
+                <!-- #region: Tables -->
                 <ScrollViewer Style="{StaticResource mainScroll}"
                               Grid.ColumnSpan="2">
-
                     <StackPanel Style="{StaticResource centerPanel}">
-
-                        <!--Discrete-->
+                        <!-- Discrete -->
                         <StackPanel Orientation="Horizontal"
                                     Style="{StaticResource centerPanel}"
                                     Margin="0, 10">
-
                             <StackPanel>
-
                                 <TextBlock Text="Variants:"
                                            Style="{StaticResource subOut}"
                                            FontWeight="Bold" />
                                 <TextBlock Text="Frequency:"
                                            Style="{StaticResource subOut}"
                                            FontWeight="Bold" />
-
                             </StackPanel>
-
                             <UniformGrid Name="outDiscreteSeries" />
-
                         </StackPanel>
-
-                        <!--Intervals-->
+                        <!-- Intervals -->
                         <StackPanel Orientation="Horizontal"
                                     Style="{StaticResource centerPanel}"
                                     Margin="0, 10">
-
                             <StackPanel>
-
                                 <TextBlock Text="Interval variants:"
                                            Style="{StaticResource subOut}"
                                            FontWeight="Bold" />
                                 <TextBlock Text="Frequency:"
                                            Style="{StaticResource subOut}"
                                            FontWeight="Bold" />
-
                             </StackPanel>
-
                             <UniformGrid Name="outIntervalSeries" />
-
                         </StackPanel>
-
                     </StackPanel>
-
                 </ScrollViewer>
-
-                
-                <!--#endregion-->
-
-                <!--#region: Plots-->
+                <!-- #endregion -->
+                <!-- #region: Plots -->
                 <WpfPlot Name="outDiscreteSeriesPlot"
                          Grid.Row="1" />
-
                 <WpfPlot Name="outIntervalSeriesPlot"
                          Grid.Row="1"
                          Grid.Column="1" />
-                <!--#endregion-->
-
+                <!-- #endregion -->
             </Grid>
-
         </TabItem>
-        <!--#endregion-->
-
-        <!--#region: Accumulated frequencies-->
+        <!-- #endregion -->
+        <!-- #region: Accumulated frequencies -->
         <TabItem Header="Accumulated frequencies">
-
             <Grid>
-
-                <!--#region: Col & row definicions-->
+                <!-- #region: Col & row definicions -->
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <!--#endregion-->
-
-                <!--#region: Frequencies-->
+                <!-- #endregion -->
+                <!-- #region: Frequencies -->
                 <ScrollViewer Style="{StaticResource mainScroll}">
-
                     <StackPanel Style="{StaticResource centerPanel}"
                                 Orientation="Horizontal">
-
                         <StackPanel Style="{StaticResource centerPanel}">
-
                             <TextBlock Text="Relative frequencies:"
-                                       Style="{StaticResource subOut}"/>
-
+                                       Style="{StaticResource subOut}" />
                             <TextBlock Text="Relative accumulated frequencies:"
                                        Style="{StaticResource subOut}" />
-
                         </StackPanel>
-
                         <UniformGrid x:Name="outAccumulatedFrequencies" />
-
                     </StackPanel>
-
                 </ScrollViewer>
-                
-                <WpfPlot x:Name="outAccumulatedFrequenciesPlot" 
+                <WpfPlot x:Name="outAccumulatedFrequenciesPlot"
                          Grid.Row="1" />
-                <!--#endregion-->
-                
+                <!-- #endregion -->
             </Grid>
-            
         </TabItem>
-        <!--#endregion-->
-
-        <!--#region: Task-->
-
-        <!--#endregion-->
-
-        <!--#region: Task-->
-
-        <!--#endregion-->
-
-        <!--#region: Task-->
-
-        <!--#endregion-->
-
-
+        <!-- #endregion -->
+        <!-- #region: Task -->
+        <!-- #endregion -->
+        <!-- #region: Task -->
+        <!-- #endregion -->
+        <!-- #region: Task -->
+        <!-- #endregion -->
     </TabControl>
-
 </Window>
