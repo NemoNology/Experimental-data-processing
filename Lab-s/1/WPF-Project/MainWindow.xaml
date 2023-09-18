@@ -65,12 +65,13 @@
         </ResourceDictionary>
     </Window.Resources>
     <TabControl Background="{StaticResource dark}"
-                SelectedIndex="2">
+                SelectedIndex="3">
         <!-- #region: Initial data -->
         <TabItem Header="Initial data">
             <Grid>
                 <StackPanel Style="{StaticResource centerPanel}">
-                    <UniformGrid x:Name="outInitialData" />
+                    <UniformGrid x:Name="outInitialData"
+                                 ToolTip="X - Обводнённость из рассматриваемых насосов скважин" />
                 </StackPanel>
             </Grid>
         </TabItem>
@@ -93,33 +94,9 @@
                               Grid.ColumnSpan="2">
                     <StackPanel Style="{StaticResource centerPanel}">
                         <!-- Discrete -->
-                        <StackPanel Orientation="Horizontal"
-                                    Style="{StaticResource centerPanel}"
-                                    Margin="0, 10">
-                            <StackPanel>
-                                <TextBlock Text="Variants:"
-                                           Style="{StaticResource subOut}"
-                                           FontWeight="Bold" />
-                                <TextBlock Text="Frequency:"
-                                           Style="{StaticResource subOut}"
-                                           FontWeight="Bold" />
-                            </StackPanel>
-                            <UniformGrid Name="outDiscreteSeries" />
-                        </StackPanel>
+                        <UniformGrid Name="outDiscreteSeries" />
                         <!-- Intervals -->
-                        <StackPanel Orientation="Horizontal"
-                                    Style="{StaticResource centerPanel}"
-                                    Margin="0, 10">
-                            <StackPanel>
-                                <TextBlock Text="Interval variants:"
-                                           Style="{StaticResource subOut}"
-                                           FontWeight="Bold" />
-                                <TextBlock Text="Frequency:"
-                                           Style="{StaticResource subOut}"
-                                           FontWeight="Bold" />
-                            </StackPanel>
-                            <UniformGrid Name="outIntervalSeries" />
-                        </StackPanel>
+                        <UniformGrid Name="outIntervalSeries" />
                     </StackPanel>
                 </ScrollViewer>
                 <!-- #endregion -->
@@ -144,14 +121,7 @@
                 <!-- #endregion -->
                 <!-- #region: Frequencies -->
                 <ScrollViewer Style="{StaticResource mainScroll}">
-                    <StackPanel Style="{StaticResource centerPanel}"
-                                Orientation="Horizontal">
-                        <StackPanel Style="{StaticResource centerPanel}">
-                            <TextBlock Text="Relative frequencies:"
-                                       Style="{StaticResource subOut}" />
-                            <TextBlock Text="Relative accumulated frequencies:"
-                                       Style="{StaticResource subOut}" />
-                        </StackPanel>
+                    <StackPanel Style="{StaticResource centerPanel}">
                         <UniformGrid x:Name="outAccumulatedFrequencies" />
                     </StackPanel>
                 </ScrollViewer>
@@ -161,7 +131,36 @@
             </Grid>
         </TabItem>
         <!-- #endregion -->
-        <!-- #region: Task -->
+        <!-- #region: Task 4 -->
+        <TabItem Header="Task 4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ScrollViewer Style="{StaticResource mainScroll}">
+                    <StackPanel Orientation="Horizontal"
+                                Style="{StaticResource centerPanel}">
+                        <StackPanel Style="{StaticResource centerPanel}">
+                            <TextBlock Text="MoX"
+                                       Style="{StaticResource subOut}" />
+                            <TextBlock Text="MeX"
+                                       Style="{StaticResource subOut}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource centerPanel}">
+                            <TextBlock x:Name="outMoX"
+                                       Style="{StaticResource mainOut}" />
+                            <TextBlock x:Name="outMeX"
+                                       Style="{StaticResource mainOut}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+                <ScrollViewer Grid.Row="1"
+                              Style="{StaticResource mainScroll}">
+                    <UniformGrid x:Name="outConditionalVariants" />
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
         <!-- #endregion -->
         <!-- #region: Task -->
         <!-- #endregion -->

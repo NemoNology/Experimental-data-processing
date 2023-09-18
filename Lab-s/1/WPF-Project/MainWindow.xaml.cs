@@ -1,11 +1,11 @@
 ﻿using ScottPlot;
 using System;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-
 using colors = System.Drawing.Color;
 
 namespace WPF_Project
@@ -18,13 +18,13 @@ namespace WPF_Project
         public MainWindow()
         {
             InitializeComponent();
-            seriesFrequencies = GetSeriesFrequencies();
             intervalsInfo = GetIntervalsInfo();
+            seriesFrequencies = GetSeriesFrequencies();
 
             Init();
         }
 
-        static double[] Data =
+        static readonly double[] Data =
         {
             61.2, 61.4, 60.2, 61.2, 61.3, 60.4, 61.4, 60.8, 61.2, 60.6,
             61.6, 60.2, 61.3, 60.3, 60.7, 60.9, 61.2, 60.5, 61.0, 61.4,
@@ -37,12 +37,12 @@ namespace WPF_Project
             61.5, 61.7, 62.3, 62.3, 61.7, 62.9, 62.5, 62.8, 62.6, 61.5,
             62.1, 62.6, 61.6, 62.5, 62.4, 62.3, 62.1, 62.3, 62.2, 62.1
         };
-
         #region Vars...
-        (double[] series, double[] frequency,
-            double[] relatedFrequensy,
-            double[] accumulatedRelatedFrequency) seriesFrequencies;
-        (double x0, double h, int len,
+        readonly (double[] series, double[] frequency,
+            double[] relatedFrequency,
+            double[] accumulatedRelatedFrequency,
+            double MoX, double MeX) seriesFrequencies;
+        readonly (double x0, double h, int k,
             (double start, double end)[] sessions,
             double[] count, double[] positions) intervalsInfo;
         #endregion
@@ -51,7 +51,9 @@ namespace WPF_Project
         {
             var arr = seriesFrequencies.series;
             var fr = seriesFrequencies.frequency;
-            InsertDataInUniformedGrid(outDiscreteSeries, new double[][] { arr, fr } );
+            InsertDataInUniformedGrid(outDiscreteSeries,
+                new double[][] { arr, fr }, 
+                rowNames: new string[] { "Xi:", "Frequency:" });
 
             var plt = outDiscreteSeriesPlot.Plot;
             plt.Title("Discrete series plot");
@@ -65,22 +67,23 @@ namespace WPF_Project
 
         void BuildIntervalSeries()
         {
-            var len = intervalsInfo.len;
+            var len = intervalsInfo.k;
             var x0 = intervalsInfo.x0;
             var h = intervalsInfo.h;
             var arr = Data.OrderBy(x => x).ToArray();
+            var dataLen = Data.Length;
+            var count = intervalsInfo.count.Select(x => x / dataLen).ToArray();
 
             var res = new string[len * 2];
 
             for (int i = 0; i < len; i++)
             {
                 res[i] = $"{x0:f2} - {intervalsInfo.sessions[i].end:f2}";
-                res[len + i] = intervalsInfo.count[i].ToString();
+                res[len + i] = count[i].ToString();
             }
 
-            InsertDataInUniformedGrid(outIntervalSeries, res, (2, len));
-
-            var count = intervalsInfo.count;
+            InsertDataInUniformedGrid(outIntervalSeries, Array1DToArray2D(res, (2, len)), 
+                rowNames: new string[] { "Intervals:", "Frequency:" });
 
             var plt = outIntervalSeriesPlot.Plot;
             plt.Title("Interval series plot");
@@ -95,9 +98,11 @@ namespace WPF_Project
         {
             var arr = seriesFrequencies.series;
             var acFr = seriesFrequencies.accumulatedRelatedFrequency;
+            var colNames = Enumerable.Range(1, arr.Length).Select(x => x.ToString()).ToArray();
 
             InsertDataInUniformedGrid(outAccumulatedFrequencies,
-                new double[][] { seriesFrequencies.relatedFrequensy, acFr });
+                new double[][] { seriesFrequencies.relatedFrequency, acFr }, 
+                rowNames: new string[] { "Related frequency:", "Accumulated frequency:" });
 
             var plt = outAccumulatedFrequenciesPlot.Plot;
             plt.Title("Sum curve");
@@ -110,58 +115,33 @@ namespace WPF_Project
             outAccumulatedFrequenciesPlot.Refresh();
         }
 
-        static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[] arr, (int rowsAmount, int columnAmount) size)
+        void BuildTask4()
         {
-            grid.Children.Clear();
+            outMoX.Text = seriesFrequencies.MoX.ToString();
+            outMeX.Text = seriesFrequencies.MeX.ToString();
 
-            grid.Rows = size.rowsAmount;
-            grid.Columns = size.columnAmount;
+            var columnNames = new string[] { "xi", "ni", "ui", "ni*ui", "ni*ui^2", "ni*ui^3", "ni*ui^4" };
+            var Xi = intervalsInfo.positions;
+            var cL = columnNames.Length;
 
-            foreach (var ar in arr)
-            {
-                grid.Children.Add(GetTextBlock(ar!));
-            }
-        }
+            var res = new double[cL][];
+            var temp = new double[cL];
 
-        static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[][] arr)
-        {
-            grid.Children.Clear();
-
-            grid.Rows = arr.Length;
-            grid.Columns = arr[0].Length;
-
-            foreach (var ar in arr)
-            {
-                foreach (var item in ar)
-                {
-                    grid.Children.Add(GetTextBlock(item!));
-                }
-            }
         }
 
         void Init()
         {
-            InsertDataInUniformedGrid(outInitialData, Data, (10, 10));
+            var rowNames = Enumerable.Range(1, 10).Select(x => x.ToString()).ToArray();
+            var columnNames = new string[] { " " }.Concat(rowNames).ToArray();
+            InsertDataInUniformedGrid(outInitialData, Array1DToArray2D(Data, (10, 10)), columnNames, rowNames);
 
             BuildDiscreteSeries();
             BuildIntervalSeries();
             BuildAccumulatedFrequencies();
+            BuildTask4();
         }
 
-        static TextBlock GetTextBlock(object content)
-        {
-            return new TextBlock
-            {
-                Foreground = Brushes.White,
-                Padding = new Thickness(5),
-                Background = Brushes.DimGray,
-                FontSize = 14,
-                TextAlignment = System.Windows.TextAlignment.Center,
-                Text = content.ToString()
-            };
-        }
-
-        (double[], double[], double[], double[]) GetSeriesFrequencies()
+        (double[], double[], double[], double[], double, double) GetSeriesFrequencies()
         {
             var arr = Data.OrderBy(x => x).ToArray();
             var fullLen = Data.Length;
@@ -171,7 +151,7 @@ namespace WPF_Project
                 {
                     Value = group.Key,
                     Frequency = (double)group.Count(),
-                    RelatedFrequency = Math.Round(group.Key / fullLen, 3)
+                    RelatedFrequency = Math.Round((double)group.Count() / fullLen, 3)
                 })
                 .ToArray();
 
@@ -188,11 +168,13 @@ namespace WPF_Project
             return (temp.Select(x => x.Value).ToArray(),
                     temp.Select(x => x.Frequency).ToArray(),
                     temp.Select(x => x.RelatedFrequency).ToArray(),
-                    accumulatedRelativeFrequencies
+                    accumulatedRelativeFrequencies,
+                    temp.MaxBy(x => x.Frequency)!.Value,
+                    Math.Round((temp[intervalsInfo.k].Value + temp[intervalsInfo.k + 1].Value) / 2, 3)
                     );
         }
 
-        (double, double, int,
+        static (double, double, int,
             (double, double)[],
             double[], double[]) GetIntervalsInfo()
         {
@@ -221,5 +203,75 @@ namespace WPF_Project
 
             return (x0, h, len, sessions, count, positions);
         }
+
+        #region Extended
+        static T[][] Array1DToArray2D<T>(T[] array, (int rowCount, int columnCount) size)
+        {
+            var rC = size.rowCount;
+            var cC = size.columnCount;
+            var res = new T[rC][];
+
+            for (int i = 0; i < rC; i++)
+            {
+                var temp = new T[cC];
+                var Dj = i * cC;
+
+                for (int j = 0; j < cC; j++)
+                {
+                    temp[j] = array[j + Dj];
+                }
+
+                res[i] = temp;
+            }
+
+            return res;
+        }
+
+        static void InsertDataInUniformedGrid<T>(UniformGrid grid, T[][] arr, string[]? columnNames = null, string[]? rowNames = null)
+        {
+            grid.Children.Clear();
+            grid.Rows = rowNames is null ? arr.Length : arr.Length + 1;
+            grid.Columns = ReferenceEquals(rowNames, columnNames) ?
+                arr[0].Length : arr[0].Length + 1;
+
+            if (columnNames is not null)
+            {
+                foreach (var colName in columnNames)
+                {
+                    grid.Children.Add(GetTextBlock(colName, true));
+                }
+            }
+
+            var len = arr.Length;
+
+            for (int i = 0; i < len; i++)
+            {
+                if (rowNames is not null)
+                {
+                    grid.Children.Add(GetTextBlock(rowNames[i], true));
+                }
+
+                foreach (var item in arr[i])
+                {
+                    grid.Children.Add(GetTextBlock(item!));
+                }
+            }
+        }
+
+        static TextBlock GetTextBlock(object content, bool IsHeader = false)
+        {
+            return new TextBlock
+            {
+                Foreground = Brushes.White,
+                Padding = new Thickness(2),
+                Background = IsHeader ? Brushes.SlateGray : Brushes.DimGray,
+                FontSize = IsHeader ? 15 : 14,
+                TextAlignment = IsHeader ?
+                System.Windows.TextAlignment.Right : System.Windows.TextAlignment.Center,
+                FontWeight = IsHeader ? FontWeights.Bold : FontWeights.Normal,
+                Text = content.ToString()
+            };
+        }
+        #endregion
     }
 }
