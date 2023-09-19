@@ -66,20 +66,79 @@ plt.ylabel('Frequency')
 
 relatedFrequencies = np.array([np.round(fr / lenData, 2) for fr in frequency])
 accumulatedRelativeFrequencies = [.0] * lenOrderedData
-accumulatedRelativeFrequencies[0] = relatedFrequencies[0] 
+accumulatedRelativeFrequencies[0] = relatedFrequencies[0]
 for i in range(1, lenOrderedData):
     accumulatedRelativeFrequencies[i] = \
         accumulatedRelativeFrequencies[i - 1] + relatedFrequencies[i]
 
 # print(tb.tabulate(
-#     [sortedData, 
-#      relatedFrequencies, 
+#     [sortedData,
+#      relatedFrequencies,
 #      accumulatedRelativeFrequencies]))
 
 plt.bar(orderedData, accumulatedRelativeFrequencies,
         width=(orderedData[-1] - orderedData[0]) / lenOrderedData, color='purple', edgecolor='k')
 plt.plot(orderedData, accumulatedRelativeFrequencies,
-        linewidth=2, color='k')
+         linewidth=2, color='k')
 plt.title('Sum curve')
 plt.xlabel('Interal center')
 plt.ylabel('Frequency')
+
+MoX, = orderedData[np.where(frequency == frequency.max())]
+MeX = .0
+half = lenOrderedData / 2
+if (lenOrderedData % 2 == 0):
+    MeX = np.round((orderedData[half] + orderedData[half + 1]) / 2, 2)
+else:
+    MeX = orderedData[(int(np.round(half, 0)))]
+
+u = np.array((orderedData - MoX) / h)
+
+res = np.array([
+    [orderedData[i], frequency[i], u[i],
+     frequency[i] * u[i],
+     frequency[i] * u[i]**2,
+     frequency[i] * u[i]**3,
+     frequency[i] * u[i]**4]
+    for i in range(lenOrderedData)])
+
+m1, m2, m3, m4 = 0, 0, 0, 0
+
+for i in range(lenOrderedData):
+    m1 += res[i, 3]
+    m2 += res[i, 4]
+    m3 += res[i, 5]
+    m4 += res[i, 6]
+
+m1 /= lenData
+m2 /= lenData
+m3 /= lenData
+m4 /= lenData
+
+headers = [
+    'Xi', 'Ni', 'Ui', 'Ni * Ui',
+     'Ni * Ui^2', 'Ni * Ui^3', 'Ni * Ui^4']
+# print(tb.tabulate(res, headers=headers, floatfmt='.2f'))
+
+# print(f'M1: {m1:.2f}')
+# print(f'M2: {m2:.2f}')
+# print(f'M3: {m3:.2f}')
+# print(f'M4: {m4:.2f}')
+s_2 = (m2 - m1**2) * h**2
+s = np.sqrt(s_2)
+cA = m1 * h + MoX
+# print(f'Chosen avarage (X̄): {cA:.2f}')
+# print(f'S^2 = D(X): {s_2:.2f}')
+# print(f'S: {s:.2f}')
+# print(f'V: {s / cA:.2f}')
+m_3 = (m3 - 3 * m2 * m1 + 2 * m1**3) * h**3
+m_4 = (m4 - 4 * m3 * m1 + 6 * m2 * m1**2 - 3 * m1**4) * h**4
+# print(f'm3: {m3:.2f}')
+# print(f'm4: {m_4:.2f}')
+# print(f'As: {m_3 / s**3:.2f}')
+# print(f'Ex: {m_4 / s**4 - 3:.2f}')
+
+ty = 1.984
+q = 0.143
+# print(f'{cA - s / lenOrderedData * ty:.2f} < a < {cA + s / lenOrderedData * ty:.2f}')
+# print(f'{s * (1 - q):.2f} < σ < {s * (1 + q):.2f}')
