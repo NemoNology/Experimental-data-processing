@@ -106,9 +106,9 @@ namespace WPF_Project
 
             var plt = outAccumulatedFrequenciesPlot.Plot;
             plt.Title("Sum curve");
-            var bar = plt.AddBar(acFr,
-                arr, colors.RosyBrown);
-            bar.BarWidth = 0.1;
+            //var bar = plt.AddBar(acFr,
+            //    arr, colors.RosyBrown);
+            //bar.BarWidth = 0.1;
             plt.AddScatter(arr, acFr,
                 colors.Black).LineWidth = 2;
 
@@ -126,6 +126,8 @@ namespace WPF_Project
 
             var res = new double[cL][];
             var temp = new double[cL];
+
+
 
         }
 
