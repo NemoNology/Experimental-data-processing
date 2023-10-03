@@ -1,0 +1,170 @@
+﻿<Window x:Class="WPF_Project.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Project"
+        mc:Ignorable="d"
+        ResizeMode="CanResize"
+        x:Name="App"
+        Title="Distribution series and calculation methods"
+        Height="640"
+        Width="860">
+    <Window.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="dark"
+                             Color="#333338" />
+            <Style x:Key="mainOut"
+                   TargetType="TextBlock">
+                <Setter Property="Foreground"
+                        Value="WhiteSmoke" />
+                <Setter Property="Background"
+                        Value="DimGray" />
+                <Setter Property="FontSize"
+                        Value="13" />
+                <Setter Property="Padding"
+                        Value="5" />
+                <Setter Property="TextWrapping"
+                        Value="Wrap" />
+            </Style>
+            <Style x:Key="subOut"
+                   TargetType="TextBlock">
+                <Setter Property="Foreground"
+                        Value="Gainsboro" />
+                <Setter Property="Background"
+                        Value="SlateGray" />
+                <Setter Property="FontSize"
+                        Value="14" />
+                <Setter Property="Padding"
+                        Value="5" />
+                <Setter Property="TextWrapping"
+                        Value="Wrap" />
+                <Setter Property="TextAlignment"
+                        Value="Right" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+            </Style>
+            <Style x:Key="mainScroll"
+                   TargetType="ScrollViewer">
+                <Setter Property="HorizontalScrollBarVisibility"
+                        Value="Auto" />
+                <Setter Property="VerticalScrollBarVisibility"
+                        Value="Auto" />
+                <Setter Property="Margin"
+                        Value="5" />
+                <Setter Property="Padding"
+                        Value="10" />
+            </Style>
+            <Style x:Key="centerPanel"
+                   TargetType="StackPanel">
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <TabControl Background="{StaticResource dark}"
+                SelectedIndex="3">
+        <!-- #region: Initial data -->
+        <TabItem Header="Initial data">
+            <Grid>
+                <StackPanel Style="{StaticResource centerPanel}">
+                    <UniformGrid x:Name="outInitialData"
+                                 ToolTip="X - Обводнённость из рассматриваемых насосов скважин" />
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <!-- #endregion -->
+        <!-- #region: Distribution series -->
+        <TabItem Header="Distribution series">
+            <Grid>
+                <!-- #region: Col & row definicions -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!-- #endregion -->
+                <!-- #region: Tables -->
+                <ScrollViewer Style="{StaticResource mainScroll}"
+                              Grid.ColumnSpan="2">
+                    <StackPanel Style="{StaticResource centerPanel}">
+                        <!-- Discrete -->
+                        <UniformGrid Name="outDiscreteSeries" />
+                        <!-- Intervals -->
+                        <UniformGrid Name="outIntervalSeries" />
+                    </StackPanel>
+                </ScrollViewer>
+                <!-- #endregion -->
+                <!-- #region: Plots -->
+                <WpfPlot Name="outDiscreteSeriesPlot"
+                         Grid.Row="1" />
+                <WpfPlot Name="outIntervalSeriesPlot"
+                         Grid.Row="1"
+                         Grid.Column="1" />
+                <!-- #endregion -->
+            </Grid>
+        </TabItem>
+        <!-- #endregion -->
+        <!-- #region: Accumulated frequencies -->
+        <TabItem Header="Accumulated frequencies">
+            <Grid>
+                <!-- #region: Col & row definicions -->
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!-- #endregion -->
+                <!-- #region: Frequencies -->
+                <ScrollViewer Style="{StaticResource mainScroll}">
+                    <StackPanel Style="{StaticResource centerPanel}">
+                        <UniformGrid x:Name="outAccumulatedFrequencies" />
+                    </StackPanel>
+                </ScrollViewer>
+                <WpfPlot x:Name="outAccumulatedFrequenciesPlot"
+                         Grid.Row="1" />
+                <!-- #endregion -->
+            </Grid>
+        </TabItem>
+        <!-- #endregion -->
+        <!-- #region: Task 4 -->
+        <TabItem Header="Task 4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ScrollViewer Style="{StaticResource mainScroll}">
+                    <StackPanel Orientation="Horizontal"
+                                Style="{StaticResource centerPanel}">
+                        <StackPanel Style="{StaticResource centerPanel}">
+                            <TextBlock Text="MoX"
+                                       Style="{StaticResource subOut}" />
+                            <TextBlock Text="MeX"
+                                       Style="{StaticResource subOut}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource centerPanel}">
+                            <TextBlock x:Name="outMoX"
+                                       Style="{StaticResource mainOut}" />
+                            <TextBlock x:Name="outMeX"
+                                       Style="{StaticResource mainOut}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+                <ScrollViewer Grid.Row="1"
+                              Style="{StaticResource mainScroll}">
+                    <UniformGrid x:Name="outConditionalVariants" />
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+        <!-- #endregion -->
+        <!-- #region: Task -->
+        <!-- #endregion -->
+        <!-- #region: Task -->
+        <!-- #endregion -->
+    </TabControl>
+</Window>
