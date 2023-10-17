@@ -17,6 +17,7 @@ namespace Console_Project
             double funY11(int i = 0) => 2 * x[i] * x[^1] / (x[i] - x[^1]);
             var yRes0 = funY11();
             var diffs = x.Select(x => Math.Abs(x - yRes0)).ToArray();
+            // TODO: test this
             var minIndex = Array.IndexOf(diffs, diffs.Min());
             var beforeMin = diffs[..minIndex];
             var withoutMin = beforeMin.Concat(diffs.Skip(beforeMin.Length).ToArray());
